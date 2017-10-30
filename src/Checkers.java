@@ -28,6 +28,8 @@ import java.awt.*;
 import javax.swing.*;
 import java.applet.*;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 //***********************************************************************
 public class Checkers extends JFrame
@@ -123,7 +125,7 @@ public class Checkers extends JFrame
       return ((i>=0) && (i<boardPlan.length));
    }
 
-
+   
    //***********************************************************************
    void movePiece(int i1, int j1, int i2, int j2, String piece)
    {
@@ -196,6 +198,7 @@ public class Checkers extends JFrame
    {
         //*** create a new game and make it visible
         Checkers game = new Checkers();
+
 
 
         //*** arbitrarily move a few pieces around
