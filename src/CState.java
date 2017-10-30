@@ -31,12 +31,31 @@ class CState
       //*** discussed in class
       void evalState()
       {
-         //*** add your own necessary logic here to properly evaluate a state
-         //*** I am just assigning some random numbers for demonstration purposes
-         e = Math.random()*10;
-      }
+          //*** add your own necessary logic here to properly evaluate a state
+          //*** I am just assigning some random numbers for demonstration purposes
+          int bs, bk, rs, rk;
+          bs = bk = rs = rk = 0;
+          for(int i = 0; i <= state.length; i++){
+              for(int j = 0; j <= state.length; j++){
+                  if( state[i][j] == 1){
+                      bs += 1;
+                  }//end bs
+                  if( state[i][j] == 2){
+                      bk += 1;
+                  }//end bk
+                  if( state[i][j] == 3){
+                      rs += 1;
+                  }//end rs
+                  if( state[i][j] == 4){
+                      rk += 1;
+                  }//end rk
+              }//end inner loop
+          }//end outter loop
+          e = ((5*bk + bs)-(5*rk + rs));//max evaluation function
+      }//end evalState
 
-      //**************************************************************
+
+    //**************************************************************
       //*** get a node's E() value
       double getE()
       {
