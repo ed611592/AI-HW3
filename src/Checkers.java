@@ -28,8 +28,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.applet.*;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.PriorityQueue;
+import java.util.*;
 
 //***********************************************************************
 public class Checkers extends JFrame
@@ -125,7 +124,7 @@ public class Checkers extends JFrame
       return ((i>=0) && (i<boardPlan.length));
    }
 
-   
+
    //***********************************************************************
    void movePiece(int i1, int j1, int i2, int j2, String piece)
    {
@@ -194,13 +193,71 @@ public class Checkers extends JFrame
    //***********************************************************************
    //*** incorporate your MINIMAX algorithm in here
    //***********************************************************************
+   ArrayList getChildren(CState node){
+      ArrayList children = new ArrayList();
+
+      //TODO
+
+      return children;
+   }
+
+   //find max value of two numbers
+   double max(double v1, double v2){
+      if(v1 > v2){
+         return v1;
+      }
+      return v2;
+   }//end max
+
+   //find the min of two numbers
+   double min(double v1, double v2){
+      if(v1 > v2){
+         return v2;
+      }
+      return v1;
+   }//end min
+
+   public double minimax(CState currentBoard, int depth, boolean max){
+      double best = 0;
+      if( max == true) {
+        // CState boardNode = new CState(currentBoard, "MAX");
+         if(depth == 0){// || ) //todo add or a winner
+            currentBoard.evalState();
+            return currentBoard.getE(); //value of the boardstate
+         }//end if
+         best = Double.MIN_VALUE;
+         ArrayList<CState> children = new ArrayList();
+         children = getChildren(currentBoard);
+         for(int i = 0; i < children.size(); i++){
+            double current_val = minimax(children.get(i), depth-1, false);
+            best = max(best, current_val);
+         }
+         return best;
+      }//end MAX turn
+
+      if( max == false){
+         // CState boardNode = new CState(currentBoard, "MAX");
+         if(depth == 0){// || ) //todo add or a winner
+            currentBoard.evalState();
+            return currentBoard.getE(); //value of the boardstate
+         }//end if
+         best = Double.MAX_VALUE;
+         ArrayList<CState> children = new ArrayList();
+         children = getChildren(currentBoard);
+         for(int i = 0; i < children.size(); i++){
+            double current_val = minimax(children.get(i), depth-1, true);
+            best = min(best, current_val);
+         }
+         return best;
+      }//end MIN turn
+
+      return best;
+   }
+
    public static void main(String [] args)
    {
         //*** create a new game and make it visible
         Checkers game = new Checkers();
-
-
-
         //*** arbitrarily move a few pieces around
         //while (!game.done())
         {
