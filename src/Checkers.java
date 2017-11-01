@@ -190,19 +190,52 @@ public class Checkers extends JFrame
       pause(pauseDuration);
    }
 
+   CState createPiece(int i1, int j1, int i2, int j2){
+      CState new_state = new CState();
+      return new_state;
+   }
+   /*
+   Make a method that takes in the old position and the new position
+   creates a cstate where the piece is moved to another plcace
+    */
    //***********************************************************************
    //*** incorporate your MINIMAX algorithm in here
    //***********************************************************************
-   ArrayList getChildren(CState node){
-      ArrayList children = new ArrayList();
+   ArrayList<CState> getChildren(int i, int j, String piece){
+      ArrayList<CState> children = new ArrayList();
 
-      //TODO
+      //check move to top left of this blue piece
+      if(legalPosition(i-1) && legalPosition(j-1) && (boardPlan[i][j]==1 || boardPlan[i][j]==2)){
+         if (boardPlan[i-1][j-1]==0){
+            children.add(createPiece(i,j, i-1, j-1));
+         }
+         //if space is not empty, then see if we can jump over it
+         else if (legalPosition(i-2) && legalPosition(j-2) && boardPlan[i-2][j-2]==0){
+            if(boardPlan[i-1][j-1]==1 || boardPlan[i-1][j-1]==2){
+               children.add(createPiece((i,j,i-2,j-2));
+
+            }
+         }
+      }
+      //move to the top right of blue piece
+      if(legalPosition(i-1) && legalPosition(j+1) && (boardPlan[i][j]==1 || boardPlan[i][j]==2)){
+         if (boardPlan[i-1][j+1]==0){
+            children.add(createPiece(i,j, i-1, j+1));
+         }
+         //if space is not empty, then see if we can jump over it
+         else if (legalPosition(i-2) && legalPosition(j+2) && boardPlan[i-2][j+2]==0){
+            if(boardPlan[i-1][j+1]==1 || boardPlan[i-1][j+1]==2){
+               children.add(createPiece((i,j,i-2,j+)));
+
+            }
+         }
+      }
 
       return children;
    }
 
    //find max value of two numbers
-   double max(double v1, double v2){
+   static double max(double v1, double v2){
       if(v1 > v2){
          return v1;
       }
@@ -210,19 +243,20 @@ public class Checkers extends JFrame
    }//end max
 
    //find the min of two numbers
-   double min(double v1, double v2){
+   static double min(double v1, double v2){
       if(v1 > v2){
          return v2;
       }
       return v1;
    }//end min
 
-   public double minimax(CState currentBoard, int depth, boolean max){
+   public static double minimax(Checkers game, int depth, boolean max){
       double best = 0;
       if( max == true) {
-        // CState boardNode = new CState(currentBoard, "MAX");
+         CState boardNode = new CState(game.getState(), "MAX");
          if(depth == 0){// || ) //todo add or a winner
             currentBoard.evalState();
+            game.getState();
             return currentBoard.getE(); //value of the boardstate
          }//end if
          best = Double.MIN_VALUE;
@@ -258,6 +292,9 @@ public class Checkers extends JFrame
    {
         //*** create a new game and make it visible
         Checkers game = new Checkers();
+
+      double move = 0;
+      move = minimax(game, 3, true);
         //*** arbitrarily move a few pieces around
         //while (!game.done())
         {
