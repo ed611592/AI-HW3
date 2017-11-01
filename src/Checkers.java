@@ -190,8 +190,62 @@ public class Checkers extends JFrame
       pause(pauseDuration);
    }
 
-   CState createPiece(int i1, int j1, int i2, int j2){
-      CState new_state = new CState();
+   CState createPiece(int i1, int j1, int i2, int j2, String piece){
+
+      int [][] boardPlanCopy = boardPlan;
+      GameBoard board_copy = new GameBoard(boardPlan);
+
+      //erase the old cell
+      board_copy.drawPiece(i1, j1, "images/blank.jpg");
+
+      //*** draw the new cell
+      board_copy.drawPiece(i2, j2, "images/" + piece + ".jpg");
+
+      //*** erase any captured piece from the board
+      if ((Math.abs(i1-i2) == 2) && (Math.abs(j1-j2) == 2))
+      {
+         //*** this handles  hops of length 2
+         //*** the captured piece is halfway in between the two moves
+         int captured_i = i1 + (i2-i1)/2;
+         int captured_j = j1 + (j2-j1)/2;
+
+         //*** now wait a bit
+         pause(pauseDuration);
+
+         //*** erase the captured cell
+         board_copy.drawPiece(captured_i, captured_j, "images/blank.jpg");
+
+         //*** print which piece was captured
+         System.out.println("Captured " + legend[boardPlanCopy[captured_i][captured_j]] +
+                 " from position [" + captured_i + ", " + captured_j + "]");
+
+         //*** the captured piece is removed from the board with a bang
+         boardPlanCopy[captured_i][captured_j] = 0;
+//         Applet.newAudioClip(getClass().getResource("images/hit.wav")).play();
+      }
+
+      boardPlanCopy[i2][j2] = boardPlanCopy[i1][j1];
+      boardPlanCopy[i1][j1] = 0;
+
+      //*** red single is kinged
+      if ( (i2==boardPlanCopy.length-1) && (boardPlanCopy[i2][j2] == 3) )
+      {
+         boardPlanCopy[i2][j2] = 4;
+         putPiece(i2, j2, "rk");
+      }
+
+      //*** blue single is kinged
+      if ( (i2==0) && (boardPlanCopy[i2][j2] == 1) )
+      {
+         boardPlanCopy[i2][j2] = 2;
+         putPiece(i2, j2, "bk");
+      }
+
+      //*** now wait a bit
+      pause(pauseDuration);
+
+      //****figure out this type
+      CState new_state = new CState(boardPlanCopy, "idk_type");
       return new_state;
    }
    /*
@@ -207,12 +261,12 @@ public class Checkers extends JFrame
       //if blue, check move to top left
       if(legalPosition(i-1) && legalPosition(j-1) && (boardPlan[i][j]==1 || boardPlan[i][j]==2)){
          if (boardPlan[i-1][j-1]==0){
-            children.add(createPiece(i,j, i-1, j-1));
+            children.add(createPiece(i,j, i-1, j-1, piece));
          }
          //if space is not empty, then see if we can jump over it
          else if (legalPosition(i-2) && legalPosition(j-2) && boardPlan[i-2][j-2]==0){
             if(boardPlan[i-1][j-1]==3 || boardPlan[i-1][j-1]==4){
-               children.add(createPiece(i,j,i-2,j-2));
+               children.add(createPiece(i,j,i-2,j-2, piece));
 
             }
          }
@@ -220,12 +274,12 @@ public class Checkers extends JFrame
       //if blue, check move to the top right
       if(legalPosition(i-1) && legalPosition(j+1) && (boardPlan[i][j]==1 || boardPlan[i][j]==2)){
          if (boardPlan[i-1][j+1]==0){
-            children.add(createPiece(i,j, i-1, j+1));
+            children.add(createPiece(i,j, i-1, j+1, piece));
          }
          //if space is not empty, then see if we can jump over it
          else if (legalPosition(i-2) && legalPosition(j+2) && boardPlan[i-2][j+2]==0){
             if(boardPlan[i-1][j+1]==3 || boardPlan[i-1][j+1]==4){
-               children.add(createPiece(i,j,i-2,j+2));
+               children.add(createPiece(i,j,i-2,j+2, piece));
 
             }
          }
@@ -234,12 +288,12 @@ public class Checkers extends JFrame
       //if red, check move to bottom left
       if(legalPosition(i-1) && legalPosition(j+1) && (boardPlan[i][j]==3 || boardPlan[i][j]==4)){
          if (boardPlan[i-1][j+1]==0){
-            children.add(createPiece(i,j, i+1, j-1));
+            children.add(createPiece(i,j, i+1, j-1, piece));
          }
          //if space is not empty, then see if we can jump over it
          else if (legalPosition(i-2) && legalPosition(j+2) && boardPlan[i-2][j+2]==0){
             if(boardPlan[i-1][j+1]==1 || boardPlan[i-1][j+1]==2){
-               children.add(createPiece(i,j,i-2,j+2));
+               children.add(createPiece(i,j,i-2,j+2, piece));
 
             }
          }
@@ -248,12 +302,12 @@ public class Checkers extends JFrame
       //if red, check move to bottom right
       if(legalPosition(i+1) && legalPosition(j+1) && (boardPlan[i][j]==3 || boardPlan[i][j]==4)){
          if (boardPlan[i+1][j+1]==0){
-            children.add(createPiece(i,j, i+1, j+1));
+            children.add(createPiece(i,j, i+1, j+1, piece));
          }
          //if space is not empty, then see if we can jump over it
          else if (legalPosition(i+2) && legalPosition(j+2) && boardPlan[i+2][j+2]==0){
             if(boardPlan[i+1][j+1]==1 || boardPlan[i+1][j+1]==2){
-               children.add(createPiece(i,j,i+2,j+2));
+               children.add(createPiece(i,j,i+2,j+2, piece));
 
             }
          }
@@ -262,12 +316,12 @@ public class Checkers extends JFrame
       //if a blue king, check move to bottom left
       if(legalPosition(i-1) && legalPosition(j+1) && (boardPlan[i][j]==2)){
          if (boardPlan[i-1][j+1]==0){
-            children.add(createPiece(i,j, i+1, j-1));
+            children.add(createPiece(i,j, i+1, j-1, piece));
          }
          //if space is not empty, then see if we can jump over it
          else if (legalPosition(i-2) && legalPosition(j+2) && boardPlan[i-2][j+2]==0){
             if(boardPlan[i-1][j+1]==3 || boardPlan[i-1][j+1]==4){
-               children.add(createPiece(i,j,i-2,j+2));
+               children.add(createPiece(i,j,i-2,j+2, piece));
 
             }
          }
@@ -276,12 +330,12 @@ public class Checkers extends JFrame
       //if a blue king, check move to bottom right
       if(legalPosition(i+1) && legalPosition(j+1) && (boardPlan[i][j]==2)){
          if (boardPlan[i+1][j+1]==0){
-            children.add(createPiece(i,j, i+1, j+1));
+            children.add(createPiece(i,j, i+1, j+1, piece));
          }
          //if space is not empty, then see if we can jump over it
          else if (legalPosition(i+2) && legalPosition(j+2) && boardPlan[i+2][j+2]==0){
             if(boardPlan[i+1][j+1]==3 || boardPlan[i+1][j+1]==4){
-               children.add(createPiece(i,j,i+2,j+2));
+               children.add(createPiece(i,j,i+2,j+2, piece));
 
             }
          }
@@ -290,12 +344,12 @@ public class Checkers extends JFrame
       //if red king, check move to top left
       if(legalPosition(i-1) && legalPosition(j-1) && (boardPlan[i][j]==4)){
          if (boardPlan[i-1][j-1]==0){
-            children.add(createPiece(i,j, i-1, j-1));
+            children.add(createPiece(i,j, i-1, j-1, piece));
          }
          //if space is not empty, then see if we can jump over it
          else if (legalPosition(i-2) && legalPosition(j-2) && boardPlan[i-2][j-2]==0){
             if(boardPlan[i-1][j-1]==1 || boardPlan[i-1][j-1]==2){
-               children.add(createPiece(i,j,i-2,j-2));
+               children.add(createPiece(i,j,i-2,j-2, piece));
 
             }
          }
@@ -304,12 +358,12 @@ public class Checkers extends JFrame
       //if red king, check move to top right
       if(legalPosition(i-1) && legalPosition(j+1) && (boardPlan[i][j]==4)){
          if (boardPlan[i-1][j+1]==0){
-            children.add(createPiece(i,j, i-1, j+1));
+            children.add(createPiece(i,j, i-1, j+1, piece));
          }
          //if space is not empty, then see if we can jump over it
          else if (legalPosition(i-2) && legalPosition(j+2) && boardPlan[i-2][j+2]==0){
             if(boardPlan[i-1][j+1]==1 || boardPlan[i-1][j+1]==2){
-               children.add(createPiece(i,j,i-2,j+2));
+               children.add(createPiece(i,j,i-2,j+2, piece));
 
             }
          }
@@ -343,6 +397,7 @@ public class Checkers extends JFrame
          }//end if
          best = Double.MIN_VALUE;
          ArrayList<CState> children = new ArrayList();
+         //***we need to figure out how to get this to just get the location of the piece we are looking to move
          children = getChildren(currentBoard);
          for(int i = 0; i < children.size(); i++){
             double current_val = minimax(children.get(i), depth-1, false);
