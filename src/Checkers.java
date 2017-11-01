@@ -238,7 +238,7 @@ public class Checkers extends JFrame
          }
          //if space is not empty, then see if we can jump over it
          else if (legalPosition(i-2) && legalPosition(j+2) && boardPlan[i-2][j+2]==0){
-            if(boardPlan[i-1][j+1]==3 || boardPlan[i-1][j+1]==4){
+            if(boardPlan[i-1][j+1]==1 || boardPlan[i-1][j+1]==2){
                children.add(createPiece(i,j,i-2,j+2));
 
             }
@@ -252,6 +252,34 @@ public class Checkers extends JFrame
          }
          //if space is not empty, then see if we can jump over it
          else if (legalPosition(i+2) && legalPosition(j+2) && boardPlan[i+2][j+2]==0){
+            if(boardPlan[i+1][j+1]==1 || boardPlan[i+1][j+1]==2){
+               children.add(createPiece(i,j,i+2,j+2));
+
+            }
+         }
+      }
+
+      //if a blue king, check move to bottom left
+      if(legalPosition(i-1) && legalPosition(j+1) && (boardPlan[i][j]==2)){
+         if (boardPlan[i-1][j+1]==0){
+            children.add(createPiece(i,j, i+1, j-1));
+         }
+         //if space is not empty, then see if we can jump over it
+         else if (legalPosition(i-2) && legalPosition(j+2) && boardPlan[i-2][j+2]==0){
+            if(boardPlan[i-1][j+1]==3 || boardPlan[i-1][j+1]==4){
+               children.add(createPiece(i,j,i-2,j+2));
+
+            }
+         }
+      }
+
+      //if a blue king, check move to bottom right
+      if(legalPosition(i+1) && legalPosition(j+1) && (boardPlan[i][j]==2)){
+         if (boardPlan[i+1][j+1]==0){
+            children.add(createPiece(i,j, i+1, j+1));
+         }
+         //if space is not empty, then see if we can jump over it
+         else if (legalPosition(i+2) && legalPosition(j+2) && boardPlan[i+2][j+2]==0){
             if(boardPlan[i+1][j+1]==3 || boardPlan[i+1][j+1]==4){
                children.add(createPiece(i,j,i+2,j+2));
 
@@ -259,7 +287,33 @@ public class Checkers extends JFrame
          }
       }
 
-      //if a blue king,
+      //if red king, check move to top left
+      if(legalPosition(i-1) && legalPosition(j-1) && (boardPlan[i][j]==4)){
+         if (boardPlan[i-1][j-1]==0){
+            children.add(createPiece(i,j, i-1, j-1));
+         }
+         //if space is not empty, then see if we can jump over it
+         else if (legalPosition(i-2) && legalPosition(j-2) && boardPlan[i-2][j-2]==0){
+            if(boardPlan[i-1][j-1]==1 || boardPlan[i-1][j-1]==2){
+               children.add(createPiece(i,j,i-2,j-2));
+
+            }
+         }
+      }
+
+      //if red king, check move to top right
+      if(legalPosition(i-1) && legalPosition(j+1) && (boardPlan[i][j]==4)){
+         if (boardPlan[i-1][j+1]==0){
+            children.add(createPiece(i,j, i-1, j+1));
+         }
+         //if space is not empty, then see if we can jump over it
+         else if (legalPosition(i-2) && legalPosition(j+2) && boardPlan[i-2][j+2]==0){
+            if(boardPlan[i-1][j+1]==1 || boardPlan[i-1][j+1]==2){
+               children.add(createPiece(i,j,i-2,j+2));
+
+            }
+         }
+      }
       return children;
    }
 
