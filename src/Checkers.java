@@ -311,6 +311,7 @@ public class Checkers extends JFrame {
             for (int x = 0; x < boardPlan[0].length; x++) {
                 if (boardPlan[y][x] == 1 || boardPlan[y][x] == 2) {
                     CState bestState = minimax(new CState(makeCopy(boardPlan), x, y), 3, true);
+                    System.out.println("Best");
                 }
             }
         }

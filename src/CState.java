@@ -40,8 +40,8 @@ class CState {
         //*** I am just assigning some random numbers for demonstration purposes
         int bs, bk, rs, rk;
         bs = bk = rs = rk = 0;
-        for (int i = 0; i <= state.length; i++) {
-            for (int j = 0; j <= state.length; j++) {
+        for (int i = 0; i < state.length; i++) {
+            for (int j = 0; j < state.length; j++) {
                 if (state[i][j] == 1) {
                     bs += 1;
                 }//end bs
@@ -121,7 +121,27 @@ class CState {
             boardPlanCopy[i2][j2] = 2;
         }
 
-        return new CState(boardPlanCopy, i2, j2);
+        return new CState(boardPlanCopy, i2, j2, this);
+    }
+
+    private CState createState(int i1, int j1, int i2, int j2, int removeI, int removeJ) {
+        int[][] boardPlanCopy = makeCopy(state);
+        boardPlanCopy[i2][j2] = boardPlanCopy[i1][j1];
+        boardPlanCopy[i1][j1] = 0;
+
+        //*** red single is kinged
+        if ((i2 == boardPlanCopy.length - 1) && (boardPlanCopy[i2][j2] == 3)) {
+            boardPlanCopy[i2][j2] = 4;
+        }
+
+        //*** blue single is kinged
+        if ((i2 == 0) && (boardPlanCopy[i2][j2] == 1)) {
+            boardPlanCopy[i2][j2] = 2;
+        }
+
+        boardPlanCopy[removeI][removeJ] = 0;
+
+        return new CState(boardPlanCopy, i2, j2, this);
     }
 
     /*
@@ -142,7 +162,7 @@ class CState {
             //if space is not empty, then see if we can jump over it
             else if (legalPosition(i - 2) && legalPosition(j - 2) && state[i - 2][j - 2] == 0) {
                 if (state[i - 1][j - 1] == 3 || state[i - 1][j - 1] == 4) {
-                    children.add(createState(i, j, i - 2, j - 2));
+                    children.add(createState(i, j, i - 2, j - 2, i - 1, j - 1));
 
                 }
             }
@@ -155,7 +175,7 @@ class CState {
             //if space is not empty, then see if we can jump over it
             else if (legalPosition(i - 2) && legalPosition(j + 2) && state[i - 2][j + 2] == 0) {
                 if (state[i - 1][j + 1] == 3 || state[i - 1][j + 1] == 4) {
-                    children.add(createState(i, j, i - 2, j + 2));
+                    children.add(createState(i, j, i - 2, j + 2, i - 1, j + 1));
 
                 }
             }
@@ -169,7 +189,7 @@ class CState {
             //if space is not empty, then see if we can jump over it
             else if (legalPosition(i - 2) && legalPosition(j + 2) && state[i - 2][j + 2] == 0) {
                 if (state[i - 1][j + 1] == 1 || state[i - 1][j + 1] == 2) {
-                    children.add(createState(i, j, i - 2, j + 2));
+                    children.add(createState(i, j, i - 2, j + 2, i - 1, j + 1));
 
                 }
             }
@@ -183,7 +203,7 @@ class CState {
             //if space is not empty, then see if we can jump over it
             else if (legalPosition(i + 2) && legalPosition(j + 2) && state[i + 2][j + 2] == 0) {
                 if (state[i + 1][j + 1] == 1 || state[i + 1][j + 1] == 2) {
-                    children.add(createState(i, j, i + 2, j + 2));
+                    children.add(createState(i, j, i + 2, j + 2, i + 1, j + 1));
 
                 }
             }
@@ -197,7 +217,7 @@ class CState {
             //if space is not empty, then see if we can jump over it
             else if (legalPosition(i - 2) && legalPosition(j + 2) && state[i - 2][j + 2] == 0) {
                 if (state[i - 1][j + 1] == 3 || state[i - 1][j + 1] == 4) {
-                    children.add(createState(i, j, i - 2, j + 2));
+                    children.add(createState(i, j, i - 2, j + 2, i - 1, j + 1));
 
                 }
             }
@@ -211,7 +231,7 @@ class CState {
             //if space is not empty, then see if we can jump over it
             else if (legalPosition(i + 2) && legalPosition(j + 2) && state[i + 2][j + 2] == 0) {
                 if (state[i + 1][j + 1] == 3 || state[i + 1][j + 1] == 4) {
-                    children.add(createState(i, j, i + 2, j + 2));
+                    children.add(createState(i, j, i + 2, j + 2, i + 1, j + 1));
 
                 }
             }
@@ -225,7 +245,7 @@ class CState {
             //if space is not empty, then see if we can jump over it
             else if (legalPosition(i - 2) && legalPosition(j - 2) && state[i - 2][j - 2] == 0) {
                 if (state[i - 1][j - 1] == 1 || state[i - 1][j - 1] == 2) {
-                    children.add(createState(i, j, i - 2, j - 2));
+                    children.add(createState(i, j, i - 2, j - 2, i - 1, j - 1));
 
                 }
             }
@@ -239,7 +259,7 @@ class CState {
             //if space is not empty, then see if we can jump over it
             else if (legalPosition(i - 2) && legalPosition(j + 2) && state[i - 2][j + 2] == 0) {
                 if (state[i - 1][j + 1] == 1 || state[i - 1][j + 1] == 2) {
-                    children.add(createState(i, j, i - 2, j + 2));
+                    children.add(createState(i, j, i - 2, j + 2, i - 1, j + 1));
 
                 }
             }
