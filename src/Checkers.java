@@ -231,62 +231,57 @@ public class Checkers extends JFrame {
         pause(pauseDuration);
 
         //****figure out this type
-        CState new_state = new CState(boardPlanCopy, "idk_type");
+        CState new_state = new CState(boardPlanCopy, i2, j2);
         return new_state;
     }
 
     //find max value of two numbers
-    static double max(double v1, double v2) {
-        if (v1 > v2) {
+    static CState max(CState v1, CState v2) {
+        if (v1 == null) return v2;
+        if (v2 == null) return v1;
+        if (v1.getE() > v2.getE()) {
             return v1;
         }
         return v2;
     }//end max
 
     //find the min of two numbers
-    static double min(double v1, double v2) {
-        if (v1 > v2) {
+    static CState min(CState v1, CState v2) {
+        if (v1 == null) return v2;
+        if (v2 == null) return v1;
+        if (v1.getE() > v2.getE()) {
             return v2;
         }
         return v1;
     }//end min
 
-    public static double minimax(CState currentBoard, int depth, boolean max) {
-        double best = 0;
-        if (max == true) {
-            // CState boardNode = new CState(currentBoard, "MAX");
+    public static CState minimax(CState currentBoard, int depth, boolean max) {
+        if (max) {
             if (depth == 0) {// || ) //todo add or a winner
                 currentBoard.evalState();
-                return currentBoard.getE(); //value of the boardstate
+                return currentBoard; //value of the boardstate
             }//end if
-            best = Double.MIN_VALUE;
-            ArrayList<CState> children = new ArrayList();
+            CState best = null;
+            ArrayList<CState> children = currentBoard.getChildren();
             //***we need to figure out how to get this to just get the location of the piece we are looking to move
-            children = currentBoard.getChildren();
             for (int i = 0; i < children.size(); i++) {
-                double current_val = minimax(children.get(i), depth - 1, false);
-                best = max(best, current_val);
+                CState state = minimax(children.get(i).clone(), depth - 1, false);
+                best = max(best, state);
             }
-            return best;
-        }//end MAX turn
-
-        if (max == false) {
-            // CState boardNode = new CState(currentBoard, "MAX");
-            if (depth == 0) {// || ) //todo add or a winner
+            return best.clone();
+        } else {
+            if (depth == 0) { // || ) //todo add or a winner
                 currentBoard.evalState();
-                return currentBoard.getE(); //value of the boardstate
-            }//end if
-            best = Double.MAX_VALUE;
-            ArrayList<CState> children = new ArrayList();
-            children = currentBoard.getChildren();
+                return currentBoard; //value of the boardstate
+            } //end if
+            CState best = null;
+            ArrayList<CState> children = currentBoard.getChildren();
             for (int i = 0; i < children.size(); i++) {
-                double current_val = minimax(children.get(i), depth - 1, true);
-                best = min(best, current_val);
+                CState state = minimax(children.get(i), depth - 1, true);
+                best = min(best, state);
             }
             return best;
         }//end MIN turn
-
-        return best;
     }
 
     private static int[][] makeCopy(int[][] array) {
