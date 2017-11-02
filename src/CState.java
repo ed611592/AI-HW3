@@ -81,6 +81,10 @@ class CState {
         return b;
     }
 
+    public CState clone() {
+        return new CState(makeCopy(state));
+    }
+
     //***********************************************************************
     boolean legalPosition(int i) {
         //*** can't go outside board boundaries
