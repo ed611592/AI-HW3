@@ -296,7 +296,7 @@ public class Checkers extends JFrame {
         return b;
     }
 
-    private void minimaxReds() {
+    public void minimaxReds() {
         for (int y = 0; y < boardPlan.length; y++) {
             for (int x = 0; x < boardPlan.length; x++) {
                 if (boardPlan[y][x] == 3 || boardPlan[y][x] == 4) {
@@ -306,11 +306,11 @@ public class Checkers extends JFrame {
         }
     }
 
-    private void minimaxBlues() {
+    public void minimaxBlues() {
         for (int y = 0; y < boardPlan.length; y++) {
-            for (int x = 0; x < boardPlan.length; x++) {
+            for (int x = 0; x < boardPlan[0].length; x++) {
                 if (boardPlan[y][x] == 1 || boardPlan[y][x] == 2) {
-                    CState bestState = minimax(new CState(makeCopy(boardPlan), y, x), 3, true);
+                    CState bestState = minimax(new CState(makeCopy(boardPlan), x, y), 3, true);
                 }
             }
         }
@@ -323,6 +323,7 @@ public class Checkers extends JFrame {
     public static void main(String[] args) {
         //*** create a new game and make it visible
         Checkers game = new Checkers();
+        game.minimaxBlues();
         //*** arbitrarily move a few pieces around
         //while (!game.done())
         {

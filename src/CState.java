@@ -97,7 +97,7 @@ class CState {
     }
 
     public CState clone() {
-        return new CState(makeCopy(state), i, j);
+        return new CState(makeCopy(state), i, j, parent != null ? parent : null);
     }
 
     //***********************************************************************
@@ -190,7 +190,7 @@ class CState {
         }
 
         //if a blue king, check move to bottom left
-        if (legalPosition(i - 1) && legalPosition(j + 1) && (state[i][j] == 2)) {
+        if (legalPosition(i + 1) && legalPosition(j - 1) && (state[i][j] == 2)) {
             if (state[i - 1][j + 1] == 0) {
                 children.add(createState(i, j, i + 1, j - 1));
             }
