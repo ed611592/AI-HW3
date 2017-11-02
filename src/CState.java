@@ -15,9 +15,13 @@ class CState {
     //*** some board configuration
     private int[][] state;
 
+    private int i, j;
+
     //**************************************************************
-    CState(int[][] state) {
+    CState(int[][] state, int i, int j) {
         this.state = state;
+        this.i = i;
+        this.j = j;
     }
 
     //**************************************************************
@@ -82,7 +86,7 @@ class CState {
     }
 
     public CState clone() {
-        return new CState(makeCopy(state));
+        return new CState(makeCopy(state), i, j);
     }
 
     //***********************************************************************
@@ -106,7 +110,7 @@ class CState {
             boardPlanCopy[i2][j2] = 2;
         }
 
-        return new CState(boardPlanCopy);
+        return new CState(boardPlanCopy, i2, j2);
     }
 
     /*
@@ -116,7 +120,7 @@ class CState {
     //***********************************************************************
     //*** incorporate your MINIMAX algorithm in here
     //***********************************************************************
-    public ArrayList<CState> getChildren(int i, int j, int piece) {
+    public ArrayList<CState> getChildren() {
         ArrayList<CState> children = new ArrayList();
 
         //if blue, check move to top left
