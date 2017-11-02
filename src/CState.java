@@ -9,6 +9,8 @@ import java.util.*;
 //*** this aux class represents an ADT for checkers states
 class CState {
 
+    private CState parent;
+
     //*** the evaluation function e(n)
     private double e;
 
@@ -19,9 +21,15 @@ class CState {
 
     //**************************************************************
     CState(int[][] state, int i, int j) {
+        this(state, i, j, null);
+    }
+
+    //**************************************************************
+    CState(int[][] state, int i, int j, CState parent) {
         this.state = state;
         this.i = i;
         this.j = j;
+        this.parent = parent;
     }
 
     //**************************************************************
@@ -51,6 +59,9 @@ class CState {
         e = ((5 * bk + bs) - (5 * rk + rs));//max evaluation function
     }//end evalState
 
+    public CState getParent() {
+        return parent;
+    }
 
     //**************************************************************
     //*** get a node's E() value
