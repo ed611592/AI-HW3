@@ -118,14 +118,6 @@ public class Checkers extends JFrame
 
 
    //***********************************************************************
-   boolean legalPosition(int i)
-   {
-      //*** can't go outside board boundaries
-      return ((i>=0) && (i<boardPlan.length));
-   }
-
-
-   //***********************************************************************
    void movePiece(int i1, int j1, int i2, int j2, String piece)
    {
       //*** raise exception if outside the board or moving into a non-empty
@@ -248,128 +240,6 @@ public class Checkers extends JFrame
       CState new_state = new CState(boardPlanCopy, "idk_type");
       return new_state;
    }
-   /*
-   Make a method that takes in the old position and the new position
-   creates a cstate where the piece is moved to another plcace
-    */
-   //***********************************************************************
-   //*** incorporate your MINIMAX algorithm in here
-   //***********************************************************************
-   ArrayList<CState> getChildren(int i, int j, String piece){
-      ArrayList<CState> children = new ArrayList();
-
-      //if blue, check move to top left
-      if(legalPosition(i-1) && legalPosition(j-1) && (boardPlan[i][j]==1 || boardPlan[i][j]==2)){
-         if (boardPlan[i-1][j-1]==0){
-            children.add(createPiece(i,j, i-1, j-1, piece));
-         }
-         //if space is not empty, then see if we can jump over it
-         else if (legalPosition(i-2) && legalPosition(j-2) && boardPlan[i-2][j-2]==0){
-            if(boardPlan[i-1][j-1]==3 || boardPlan[i-1][j-1]==4){
-               children.add(createPiece(i,j,i-2,j-2, piece));
-
-            }
-         }
-      }
-      //if blue, check move to the top right
-      if(legalPosition(i-1) && legalPosition(j+1) && (boardPlan[i][j]==1 || boardPlan[i][j]==2)){
-         if (boardPlan[i-1][j+1]==0){
-            children.add(createPiece(i,j, i-1, j+1, piece));
-         }
-         //if space is not empty, then see if we can jump over it
-         else if (legalPosition(i-2) && legalPosition(j+2) && boardPlan[i-2][j+2]==0){
-            if(boardPlan[i-1][j+1]==3 || boardPlan[i-1][j+1]==4){
-               children.add(createPiece(i,j,i-2,j+2, piece));
-
-            }
-         }
-      }
-
-      //if red, check move to bottom left
-      if(legalPosition(i-1) && legalPosition(j+1) && (boardPlan[i][j]==3 || boardPlan[i][j]==4)){
-         if (boardPlan[i-1][j+1]==0){
-            children.add(createPiece(i,j, i+1, j-1, piece));
-         }
-         //if space is not empty, then see if we can jump over it
-         else if (legalPosition(i-2) && legalPosition(j+2) && boardPlan[i-2][j+2]==0){
-            if(boardPlan[i-1][j+1]==1 || boardPlan[i-1][j+1]==2){
-               children.add(createPiece(i,j,i-2,j+2, piece));
-
-            }
-         }
-      }
-
-      //if red, check move to bottom right
-      if(legalPosition(i+1) && legalPosition(j+1) && (boardPlan[i][j]==3 || boardPlan[i][j]==4)){
-         if (boardPlan[i+1][j+1]==0){
-            children.add(createPiece(i,j, i+1, j+1, piece));
-         }
-         //if space is not empty, then see if we can jump over it
-         else if (legalPosition(i+2) && legalPosition(j+2) && boardPlan[i+2][j+2]==0){
-            if(boardPlan[i+1][j+1]==1 || boardPlan[i+1][j+1]==2){
-               children.add(createPiece(i,j,i+2,j+2, piece));
-
-            }
-         }
-      }
-
-      //if a blue king, check move to bottom left
-      if(legalPosition(i-1) && legalPosition(j+1) && (boardPlan[i][j]==2)){
-         if (boardPlan[i-1][j+1]==0){
-            children.add(createPiece(i,j, i+1, j-1, piece));
-         }
-         //if space is not empty, then see if we can jump over it
-         else if (legalPosition(i-2) && legalPosition(j+2) && boardPlan[i-2][j+2]==0){
-            if(boardPlan[i-1][j+1]==3 || boardPlan[i-1][j+1]==4){
-               children.add(createPiece(i,j,i-2,j+2, piece));
-
-            }
-         }
-      }
-
-      //if a blue king, check move to bottom right
-      if(legalPosition(i+1) && legalPosition(j+1) && (boardPlan[i][j]==2)){
-         if (boardPlan[i+1][j+1]==0){
-            children.add(createPiece(i,j, i+1, j+1, piece));
-         }
-         //if space is not empty, then see if we can jump over it
-         else if (legalPosition(i+2) && legalPosition(j+2) && boardPlan[i+2][j+2]==0){
-            if(boardPlan[i+1][j+1]==3 || boardPlan[i+1][j+1]==4){
-               children.add(createPiece(i,j,i+2,j+2, piece));
-
-            }
-         }
-      }
-
-      //if red king, check move to top left
-      if(legalPosition(i-1) && legalPosition(j-1) && (boardPlan[i][j]==4)){
-         if (boardPlan[i-1][j-1]==0){
-            children.add(createPiece(i,j, i-1, j-1, piece));
-         }
-         //if space is not empty, then see if we can jump over it
-         else if (legalPosition(i-2) && legalPosition(j-2) && boardPlan[i-2][j-2]==0){
-            if(boardPlan[i-1][j-1]==1 || boardPlan[i-1][j-1]==2){
-               children.add(createPiece(i,j,i-2,j-2, piece));
-
-            }
-         }
-      }
-
-      //if red king, check move to top right
-      if(legalPosition(i-1) && legalPosition(j+1) && (boardPlan[i][j]==4)){
-         if (boardPlan[i-1][j+1]==0){
-            children.add(createPiece(i,j, i-1, j+1, piece));
-         }
-         //if space is not empty, then see if we can jump over it
-         else if (legalPosition(i-2) && legalPosition(j+2) && boardPlan[i-2][j+2]==0){
-            if(boardPlan[i-1][j+1]==1 || boardPlan[i-1][j+1]==2){
-               children.add(createPiece(i,j,i-2,j+2, piece));
-
-            }
-         }
-      }
-      return children;
-   }
 
    //find max value of two numbers
    static double max(double v1, double v2){
@@ -387,7 +257,7 @@ public class Checkers extends JFrame
       return v1;
    }//end min
 
-   public static double minimax(CState currentBoard, int depth, boolean max){
+   public static double minimax(CState currentBoard, int depth, boolean max) {
       double best = 0;
       if( max == true) {
          // CState boardNode = new CState(currentBoard, "MAX");
