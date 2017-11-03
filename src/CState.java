@@ -277,15 +277,6 @@ class CState {
         return children;
     }
 
-    public boolean statesEqual(int[][] s) {
-        for (int i = 0; i < state.length; i++) {
-            for (int j = 0; j < state.length; j++) {
-                if (s[i][j] != state[i][j]) return false;
-            }
-        }
-        return true;
-    }
-
     public int[][] getState() {
         return state;
     }
