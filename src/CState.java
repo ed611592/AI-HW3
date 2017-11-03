@@ -43,7 +43,7 @@ class CState {
     void evalState() {
         //*** add your own necessary logic here to properly evaluate a state
         //*** I am just assigning some random numbers for demonstration purposes
-        int bs, bk, rs, rk;
+        double bs, bk, rs, rk;
         bs = bk = rs = rk = 0;
         for (int i = 0; i < state.length; i++) {
             for (int j = 0; j < state.length; j++) {

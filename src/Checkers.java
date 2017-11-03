@@ -379,7 +379,7 @@ public class Checkers extends JFrame {
         for (int y = 0; y < boardPlan.length; y++) {
             for (int x = 0; x < boardPlan[0].length; x++) {
                 if (boardPlan[y][x] == 1 || boardPlan[y][x] == 2) {
-                    CState bestState = minimax(new CState(makeCopy(boardPlan), x, y), 3, true);
+                    CState bestState = minimax(new CState(makeCopy(boardPlan), y, x), 3, true);
                     if (bestState.getParent() != null) {
                         nextMoves.add(bestState);
                     }
@@ -409,14 +409,14 @@ public class Checkers extends JFrame {
     public static void main(String[] args) {
         //*** create a new game and make it visible
         Checkers game = new Checkers();
-        game.nextBlueMove();
         //*** arbitrarily move a few pieces around
         while (true)
         {
             try {
                 game.nextBlueMove();
-                game.pause(1500);
+                game.pause(1000);
                 game.nextRedMove();
+                game.pause(1000);
             } catch (IllegalMoveException e) {
                 e.printStackTrace();
             }
