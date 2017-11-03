@@ -65,6 +65,8 @@ public class Checkers extends JFrame {
                     {0, 0, 0, 0, 2, 0, 0, 0}    //*** red pieces become king here
             };
 
+    private static final Random random = new Random();
+
     //*** the legend strings
     private String[] legend = {"blank", "bs", "bk", "rs", "rk"};
 
@@ -356,16 +358,27 @@ public class Checkers extends JFrame {
                 }
             }
         }
+        makeMove(nextMoves);
+    }
+
+    private void makeMove(ArrayList<CState> nextMoves) {
         CState best = null;
+        int equal = 0;
         for (CState state : nextMoves) {
             if (best == null || state.getE() > best.getE()) {
                 best = state;
+            } else if (state.getE() == best.getE()) {
+                equal += 1;
             }
         }
         if (best != null) {
+            if (equal == nextMoves.size() - 1) {
+                best = nextMoves.get(random.nextInt(nextMoves.size()));
+            }
             CState nextMove = findCStateBeforeNull(best);
             boardPlan = nextMove.getState();
             putPieces();
+            repaint();
         }
     }
 
@@ -386,17 +399,7 @@ public class Checkers extends JFrame {
                 }
             }
         }
-        CState best = null;
-        for (CState state : nextMoves) {
-            if (best == null || state.getE() > best.getE()) {
-                best = state;
-            }
-        }
-        if (best != null) {
-            CState nextMove = findCStateBeforeNull(best);
-            boardPlan = nextMove.getState();
-            putPieces();
-        }
+        makeMove(nextMoves);
     }
 
     private CState findCStateBeforeNull(CState state) {
