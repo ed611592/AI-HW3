@@ -378,7 +378,6 @@ public class Checkers extends JFrame {
             CState nextMove = findCStateBeforeNull(best);
             boardPlan = nextMove.getState();
             putPieces();
-            repaint();
         }
     }
 
