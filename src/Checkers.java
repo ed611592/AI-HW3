@@ -123,7 +123,7 @@ public class Checkers extends JFrame {
             for (int j = 0; j < boardPlan.length; j++) {
                 if (boardPlan[i][j] != 0) {
                     board.drawPiece(i, j, "images/" + legend[boardPlan[i][j]] + ".jpg");
-                } else if (i % 2 == 0 && j % 2 == 1) {
+                } else if ((i % 2 == 0 && j % 2 == 1) || (i % 2 == 1 && j % 2 == 0)) {
                     board.drawPiece(i, j, "images/blank.jpg");
                 }
             }
