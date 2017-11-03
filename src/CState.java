@@ -35,6 +35,11 @@ class CState {
     //**************************************************************
     //*** evaluate a state based on the evaluation function we
     //*** discussed in class
+    //******************************************************
+//*** Purpose: This method evaluates a state based on an evaluation function
+//*** Input: none
+//*** Output: None
+//******************************************************
     void evalState() {
         //*** add your own necessary logic here to properly evaluate a state
         //*** I am just assigning some random numbers for demonstration purposes
@@ -149,7 +154,11 @@ class CState {
  creates a cstate where the piece is moved to another plcace
   */
     //***********************************************************************
-    //*** incorporate your MINIMAX algorithm in here
+    //*** //******************************************************
+//*** Purpose: This method gets the children of the current cstate
+//*** Input: none
+//*** Output: an arraylist of cstates
+//******************************************************
     //***********************************************************************
     public ArrayList<CState> getChildren() {
         ArrayList<CState> children = new ArrayList();

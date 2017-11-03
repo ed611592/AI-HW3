@@ -24,6 +24,20 @@
 *
 ************************************************************************ */
 
+/* ******************************************************************
+************
+Author’s name(s): Emily DeMarco, Jon Rapp, Nick Boyd
+Course Title: Artificial Intelligence
+Semester: Fall 2017
+Assignment Number: HW 3
+Submission Date: 11/6/17
+Purpose: This program implements the minimax algorithm to play the game of checkers.
+Input: Checkers.java
+Output: gameboard
+
+*********************************************************************
+********* */
+
 import java.awt.*;
 import javax.swing.*;
 import java.applet.*;
@@ -179,6 +193,12 @@ public class Checkers extends JFrame {
         pause(pauseDuration);
     }
 
+    //******************************************************
+//*** Purpose: this method creates a state of the place that a piece could possible move.
+//*** Input: 4 integers that give the indices of two different places on the board; and the piece
+//*** is moving.
+//*** Output: A Cstate containing the next move.
+//******************************************************
     CState createPiece(int i1, int j1, int i2, int j2, String piece) {
 
         int[][] boardPlanCopy = boardPlan;
@@ -255,6 +275,11 @@ public class Checkers extends JFrame {
         return v1;
     }//end min
 
+    //******************************************************
+//*** Purpose: minimax algorithm
+//*** Input: the state of the current boards, the depth it will go to, and a boolean stating whether it is max's turn or not
+//*** Output: the state that the piece should move to.
+//******************************************************
     public static CState minimax(CState currentBoard, int depth, boolean max) {
         if (max) {
             if (depth == 0) {// || ) //todo add or a winner
@@ -284,6 +309,11 @@ public class Checkers extends JFrame {
         }//end MIN turn
     }
 
+    //******************************************************
+//*** Purpose: makes a copy of an array
+//*** Input: 2d array
+//*** Output: copy of 2d array
+//******************************************************
     private static int[][] makeCopy(int[][] array) {
         int[][] b = new int[array.length][];
 
@@ -295,7 +325,11 @@ public class Checkers extends JFrame {
         }
         return b;
     }
-
+    //******************************************************
+//*** Purpose:
+//*** Input: none
+//*** Output: None
+//******************************************************
     public void minimaxReds() {
         for (int y = 0; y < boardPlan.length; y++) {
             for (int x = 0; x < boardPlan.length; x++) {
@@ -306,6 +340,11 @@ public class Checkers extends JFrame {
         }
     }
 
+    //******************************************************
+//*** Purpose:
+//*** Input: none
+//*** Output: None
+//******************************************************
     public void minimaxBlues() {
         for (int y = 0; y < boardPlan.length; y++) {
             for (int x = 0; x < boardPlan[0].length; x++) {
@@ -317,6 +356,11 @@ public class Checkers extends JFrame {
         }
     }
 
+    //******************************************************
+//*** Purpose: to get the state of a cstate
+//*** Input: Cstate
+//*** Output: Cstate
+//******************************************************
     private CState findNextMove(CState state) {
         return state;
     }
