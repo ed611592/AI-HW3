@@ -402,11 +402,11 @@ public class Checkers extends JFrame {
             }//end inner loop
         }
         if((bk == 0)&&(bs==0)) {
-            JOptionPane.showConfirmDialog(null, "Red Wins!");
+            JOptionPane.showMessageDialog(null, "Red Wins!");
             System.exit(0);
         }
         if((rk == 0)&&(rs==0)) {
-            JOptionPane.showConfirmDialog(null, "Blue Wins!");
+            JOptionPane.showMessageDialog(null, "Blue Wins!");
             System.exit(0);
         }
     }
