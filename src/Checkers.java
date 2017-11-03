@@ -378,6 +378,36 @@ public class Checkers extends JFrame {
             CState nextMove = findCStateBeforeNull(best);
             boardPlan = nextMove.getState();
             putPieces();
+            checkWin();
+        }
+    }
+
+    private void checkWin(){
+        int bk, bs, rk, rs;
+        bk = bs = rs = rk = 0;
+        for (int i = 0; i < boardPlan.length; i++) {
+            for (int j = 0; j < boardPlan.length; j++) {
+                if (boardPlan[i][j] == 1) {
+                    bs += 1;
+                }//end bs
+                if (boardPlan[i][j] == 2) {
+                    bk += 1;
+                }//end bk
+                if (boardPlan[i][j] == 3) {
+                    rs += 1;
+                }//end rs
+                if (boardPlan[i][j] == 4) {
+                    rk += 1;
+                }//end rk
+            }//end inner loop
+        }
+        if((bk == 0)&&(bs==0)) {
+            JOptionPane.showConfirmDialog(null, "Red Wins!");
+            System.exit(0);
+        }
+        if((rk == 0)&&(rs==0)) {
+            JOptionPane.showConfirmDialog(null, "Blue Wins!");
+            System.exit(0);
         }
     }
 

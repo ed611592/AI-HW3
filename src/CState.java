@@ -3,6 +3,7 @@
    Forouraghi
 ***********************************************************************/
 
+import javax.swing.*;
 import java.util.*;
 
 //********************************************************************
@@ -61,7 +62,8 @@ class CState {
                 }//end rk
             }//end inner loop
         }//end outter loop
-        e = ((5 * bk + bs) - (5 * rk + rs));//max evaluation function
+        e = (((5 * bk) + bs) - ((5 * rk) + rs));//max evaluation function
+
     }//end evalState
 
     public CState getParent() {
