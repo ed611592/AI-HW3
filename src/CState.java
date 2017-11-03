@@ -76,7 +76,7 @@ class CState {
 
     //**************************************************************
     //*** get a state
-    String getState() {
+    String getStateString() {
         String result = "";
 
         for (int i = 0; i < state.length; i++) {
@@ -177,14 +177,14 @@ class CState {
             }
         }
         //if blue, check move to the top right
-        if (legalPosition(i - 1) && legalPosition(j + 1) && (state[i][j] == 1 || state[i][j] == 2)) {
-            if (state[i - 1][j + 1] == 0) {
-                children.add(createState(i, j, i - 1, j + 1));
+        if (legalPosition(i + 1) && legalPosition(j + 1) && (state[i][j] == 1 || state[i][j] == 2)) {
+            if (state[i + 1][j + 1] == 0) {
+                children.add(createState(i, j, i + 1, j + 1));
             }
             //if space is not empty, then see if we can jump over it
-            else if (legalPosition(i - 2) && legalPosition(j + 2) && state[i - 2][j + 2] == 0) {
-                if (state[i - 1][j + 1] == 3 || state[i - 1][j + 1] == 4) {
-                    children.add(createState(i, j, i - 2, j + 2, i - 1, j + 1));
+            else if (legalPosition(i + 2) && legalPosition(j + 2) && state[i + 2][j + 2] == 0) {
+                if (state[i + 1][j + 1] == 3 || state[i + 1][j + 1] == 4) {
+                    children.add(createState(i, j, i + 2, j + 2, i + 1, j + 1));
 
                 }
             }
@@ -219,9 +219,9 @@ class CState {
         }
 
         //if a blue king, check move to bottom left
-        if (legalPosition(i + 1) && legalPosition(j - 1) && (state[i][j] == 2)) {
+        if (legalPosition(i - 1) && legalPosition(j + 1) && (state[i][j] == 2)) {
             if (state[i - 1][j + 1] == 0) {
-                children.add(createState(i, j, i + 1, j - 1));
+                children.add(createState(i, j, i - 1, j - 1));
             }
             //if space is not empty, then see if we can jump over it
             else if (legalPosition(i - 2) && legalPosition(j + 2) && state[i - 2][j + 2] == 0) {
@@ -274,5 +274,18 @@ class CState {
             }
         }
         return children;
+    }
+
+    public boolean statesEqual(int[][] s) {
+        for (int i = 0; i < state.length; i++) {
+            for (int j = 0; j < state.length; j++) {
+                if (s[i][j] != state[i][j]) return false;
+            }
+        }
+        return true;
+    }
+
+    public int[][] getState() {
+        return state;
     }
 }

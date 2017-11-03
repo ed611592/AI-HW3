@@ -95,7 +95,7 @@ public class Checkers extends JFrame {
         setVisible(true);
 
         //*** place all initial pieces on board and pause a bit
-        putInitialPieces();
+        putPieces();
         pause(2 * pauseDuration);
     }
 
@@ -117,14 +117,18 @@ public class Checkers extends JFrame {
 
 
     //***********************************************************************
-    void putInitialPieces() {
+    void putPieces() {
         //*** use legend variables to draw one piece at a time
-        for (int i = 0; i < boardPlan.length; i++)
-            for (int j = 0; j < boardPlan.length; j++)
-                if (boardPlan[i][j] != 0)
+        for (int i = 0; i < boardPlan.length; i++) {
+            for (int j = 0; j < boardPlan.length; j++) {
+                if (boardPlan[i][j] != 0) {
                     board.drawPiece(i, j, "images/" + legend[boardPlan[i][j]] + ".jpg");
+                } else if (i % 2 == 0 && j % 2 == 1) {
+                    board.drawPiece(i, j, "images/blank.jpg");
+                }
+            }
+        }
     }
-
 
     //***********************************************************************
     boolean legalPosition(int i) {
@@ -293,7 +297,12 @@ public class Checkers extends JFrame {
                 CState state = minimax(children.get(i).clone(), depth - 1, false);
                 best = max(best, state);
             }
-            return best.clone();
+            if (best != null) { // if children
+                return best.clone();
+            } else { // it's a leaf
+                currentBoard.evalState();
+                return currentBoard; //value of the boardstate
+            }
         } else {
             if (depth == 0) { // || ) //todo add or a winner
                 currentBoard.evalState();
@@ -305,7 +314,12 @@ public class Checkers extends JFrame {
                 CState state = minimax(children.get(i), depth - 1, true);
                 best = min(best, state);
             }
-            return best;
+            if (best != null) { // if children
+                return best.clone();
+            } else { // it's a leaf
+                currentBoard.evalState();
+                return currentBoard; //value of the boardstate
+            }
         }//end MIN turn
     }
 
@@ -330,13 +344,28 @@ public class Checkers extends JFrame {
 //*** Input: none
 //*** Output: None
 //******************************************************
-    public void minimaxReds() {
+    public void nextRedMove() {
+        ArrayList<CState> nextMoves = new ArrayList<CState>();
         for (int y = 0; y < boardPlan.length; y++) {
             for (int x = 0; x < boardPlan.length; x++) {
                 if (boardPlan[y][x] == 3 || boardPlan[y][x] == 4) {
                     CState bestState = minimax(new CState(makeCopy(boardPlan), y, x), 3, true);
+                    if (bestState.getParent() != null) {
+                        nextMoves.add(bestState);
+                    }
                 }
             }
+        }
+        CState best = null;
+        for (CState state : nextMoves) {
+            if (best == null || state.getE() > best.getE()) {
+                best = state;
+            }
+        }
+        if (best != null) {
+            CState nextMove = findCStateBeforeNull(best);
+            boardPlan = nextMove.getState();
+            putPieces();
         }
     }
 
@@ -345,57 +374,49 @@ public class Checkers extends JFrame {
 //*** Input: none
 //*** Output: None
 //******************************************************
-    public void minimaxBlues() {
+    public void nextBlueMove() {
+        ArrayList<CState> nextMoves = new ArrayList<CState>();
         for (int y = 0; y < boardPlan.length; y++) {
             for (int x = 0; x < boardPlan[0].length; x++) {
                 if (boardPlan[y][x] == 1 || boardPlan[y][x] == 2) {
                     CState bestState = minimax(new CState(makeCopy(boardPlan), x, y), 3, true);
-                    System.out.println("Best");
+                    if (bestState.getParent() != null) {
+                        nextMoves.add(bestState);
+                    }
                 }
             }
         }
+        CState best = null;
+        for (CState state : nextMoves) {
+            if (best == null || state.getE() > best.getE()) {
+                best = state;
+            }
+        }
+        if (best != null) {
+            CState nextMove = findCStateBeforeNull(best);
+            boardPlan = nextMove.getState();
+            putPieces();
+        }
     }
 
-    //******************************************************
-//*** Purpose: to get the state of a cstate
-//*** Input: Cstate
-//*** Output: Cstate
-//******************************************************
-    private CState findNextMove(CState state) {
+    private CState findCStateBeforeNull(CState state) {
+        while (state.getParent() != null && state.getParent().getParent() != null) {
+            state = state.getParent();
+        }
         return state;
     }
 
     public static void main(String[] args) {
         //*** create a new game and make it visible
         Checkers game = new Checkers();
-        game.minimaxBlues();
+        game.nextBlueMove();
         //*** arbitrarily move a few pieces around
-        //while (!game.done())
+        while (true)
         {
             try {
-                //*** move a bs piece from board[4][7] to board[3][6]
-                game.movePiece(4, 7, 3, 6, "bs");
-
-                //*** move the rk from board[5][2] to board[4][1]
-                game.movePiece(5, 2, 4, 1, "rk");
-
-                //*** move a bs piece from board[5][0] to board[3][2]
-                //*** must capture rk in position board[4][1]
-                game.movePiece(5, 0, 3, 2, "bs");
-
-                //*** move the bk from board[7][4] to board[6]1]
-                game.movePiece(7, 4, 6, 3, "bk");
-
-                //*** move the rs from board[5][4] to board[7][2]
-                game.movePiece(5, 4, 7, 2, "rs");
-
-                //*** a few more moves just for fun
-                game.movePiece(3, 2, 2, 3, "bs");
-                game.movePiece(2, 3, 1, 4, "bs");
-                game.movePiece(1, 4, 0, 5, "bs");
-                game.movePiece(3, 6, 2, 5, "bs");
-                game.movePiece(2, 5, 1, 4, "bs");
-                game.movePiece(1, 4, 0, 3, "bs");
+                game.nextBlueMove();
+                game.pause(1500);
+                game.nextRedMove();
             } catch (IllegalMoveException e) {
                 e.printStackTrace();
             }
