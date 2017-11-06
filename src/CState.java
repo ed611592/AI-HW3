@@ -151,10 +151,7 @@ class CState {
         return new CState(boardPlanCopy, i2, j2, this);
     }
 
-    /*
- Make a method that takes in the old position and the new position
- creates a cstate where the piece is moved to another plcace
-  */
+
     //***********************************************************************
     //*** //******************************************************
 //*** Purpose: This method gets the children of the current cstate

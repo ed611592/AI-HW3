@@ -200,7 +200,7 @@ public class Checkers extends JFrame {
     }
 
     //******************************************************
-//*** Purpose: this method creates a state of the place that a piece could possible move.
+//*** Purpose: this method creates a state of the place that a piece could possibly move.
 //*** Input: 4 integers that give the indices of two different places on the board; and the piece
 //*** is moving.
 //*** Output: A Cstate containing the next move.
@@ -233,9 +233,7 @@ public class Checkers extends JFrame {
             System.out.println("Captured " + legend[boardPlanCopy[captured_i][captured_j]] +
                     " from position [" + captured_i + ", " + captured_j + "]");
 
-            //*** the captured piece is removed from the board with a bang
             boardPlanCopy[captured_i][captured_j] = 0;
-//         Applet.newAudioClip(getClass().getResource("images/hit.wav")).play();
         }
 
         boardPlanCopy[i2][j2] = boardPlanCopy[i1][j1];
@@ -288,13 +286,13 @@ public class Checkers extends JFrame {
 //******************************************************
     public static CState minimax(CState currentBoard, int depth, boolean max) {
         if (max) {
-            if (depth == 0) {// || ) //todo add or a winner
+            if (depth == 0 || checkWin()==true) {
                 currentBoard.evalState();
                 return currentBoard; //value of the boardstate
             }//end if
             CState best = null;
             ArrayList<CState> children = currentBoard.getChildren();
-            //***we need to figure out how to get this to just get the location of the piece we are looking to move
+
             for (int i = 0; i < children.size(); i++) {
                 CState state = minimax(children.get(i).clone(), depth - 1, false);
                 best = max(best, state);
@@ -306,7 +304,7 @@ public class Checkers extends JFrame {
                 return currentBoard; //value of the boardstate
             }
         } else {
-            if (depth == 0) { // || ) //todo add or a winner
+            if (depth == 0 ||  checkWin()==true) {
                 currentBoard.evalState();
                 return currentBoard; //value of the boardstate
             } //end if
@@ -342,7 +340,7 @@ public class Checkers extends JFrame {
         return b;
     }
     //******************************************************
-//*** Purpose:
+//*** Purpose: to get the next move for the red pieces
 //*** Input: none
 //*** Output: None
 //******************************************************
@@ -361,6 +359,9 @@ public class Checkers extends JFrame {
         makeMove(nextMoves);
     }
 
+    //*** Purpose: To figure out what the best move should be from all the possible the next moves
+//*** Input: an arraylist of cstates containing all the next possible moves for a piece
+//*** Output: None
     private void makeMove(ArrayList<CState> nextMoves) {
         CState best = null;
         int equal = 0;
@@ -382,7 +383,10 @@ public class Checkers extends JFrame {
         }
     }
 
-    private void checkWin(){
+    //*** Purpose: To see if a player won and the game is over
+//*** Input: none
+//*** Output: None
+    private static boolean checkWin(){
         int bk, bs, rk, rs;
         bk = bs = rs = rk = 0;
         for (int i = 0; i < boardPlan.length; i++) {
@@ -409,10 +413,11 @@ public class Checkers extends JFrame {
             JOptionPane.showMessageDialog(null, "Blue Wins!");
             System.exit(0);
         }
+        return false;
     }
 
     //******************************************************
-//*** Purpose:
+//*** Purpose: to find the next move for the blue piece
 //*** Input: none
 //*** Output: None
 //******************************************************
@@ -431,6 +436,9 @@ public class Checkers extends JFrame {
         makeMove(nextMoves);
     }
 
+    //*** Purpose: Get the parent of the current Cstate
+//*** Input: Cstate
+//*** Output: Cstate
     private CState findCStateBeforeNull(CState state) {
         while (state.getParent() != null && state.getParent().getParent() != null) {
             state = state.getParent();
